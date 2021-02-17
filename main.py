@@ -26,10 +26,12 @@ main_page = '''
     </html>
     '''
 UPLOAD_FOLDER = '/assets/audio'
+DOWNLOAD_FOLDER = '/assets/out'
 ALLOWED_EXTENSIONS = {'wav'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -50,12 +52,15 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file', filename=filename))
+            return redirect(url_for('download_file', filename=filename))
     return main_page 
 
 @app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+def download_file(filename):
+    path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    result = handle_large_audio(path)
+    write_to_file(result)
+    return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename)
 
 
 if __name__ == "__main__":
