@@ -70,6 +70,7 @@ def write_to_file(text):
         file.write(text)
 
 
-result = handle_large_audio(path_name)
-write_to_file(result)
+if __name__ == "__main__":
+    result = handle_large_audio(path_name)
+    write_to_file(result)
 
