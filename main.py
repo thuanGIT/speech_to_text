@@ -4,14 +4,11 @@ from werkzeug.utils import secure_filename
 from flask import send_from_directory
 from speech import handle_large_audio, write_to_file
 
-main_page = '''
-    
-    '''
 UPLOAD_FOLDER = '/assets/audio'
 DOWNLOAD_FOLDER = '/assets/out'
 ALLOWED_EXTENSIONS = {'m4a', 'wav','mp4','mp3'}
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
 
