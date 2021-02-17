@@ -62,8 +62,8 @@ def handle_large_audio(path) -> str:
     return whole_text
 
 
-def write_to_file(text):
-    with open('assets/out/recording.txt','w') as file:
+def write_to_file(text, filename):
+    with open(f'assets/out/{filename}.txt','w') as file:
         file.write(text)
  
     
