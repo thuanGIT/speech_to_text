@@ -5,7 +5,7 @@ from flask import send_from_directory
 from speech import handle_large_audio, write_to_file
 
 main_page = '''
-    <!doctype html>
+    <!DOCTYPE html>
     <html>
     <head>
     <style>
@@ -27,14 +27,14 @@ main_page = '''
     '''
 UPLOAD_FOLDER = '/assets/audio'
 DOWNLOAD_FOLDER = '/assets/out'
-ALLOWED_EXTENSIONS = {'wav'}
+ALLOWED_EXTENSIONS = {'m4a', 'wav','mp4','mp3'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
 
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.split('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -61,6 +61,16 @@ def download_file(filename):
     result = handle_large_audio(path)
     write_to_file(result)
     return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename)
+
+
+@app.route('/letter')
+def send_letter():
+    page = ''' 
+    <!DOCTYPE html>
+    <html>
+    '''
+    
+    return page
 
 
 if __name__ == "__main__":

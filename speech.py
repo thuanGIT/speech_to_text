@@ -3,7 +3,7 @@ from pydub import AudioSegment
 from pydub.silence import split_on_silence
 import os
 
-def handle_large_audio(path):
+def handle_large_audio(path) -> str:
     """
     Splitting the large audio file into chunks
     and apply speech recognition on each of these chunks
@@ -33,7 +33,7 @@ def handle_large_audio(path):
     sound = AudioSegment.from_wav(path)
     # Split audio where silence is 1 second or more
     # Return chunks of sound
-    chunks = split_on_silence(sound, min_silence_len= 100, silence_thresh=sound.dBFS-15,keep_silence=300)
+    chunks = split_on_silence(sound, min_silence_len= 1000, silence_thresh=sound.dBFS-15,keep_silence=300)
 
     whole_text = ''
     # process each chunk 
@@ -56,8 +56,8 @@ def handle_large_audio(path):
                 print(chunk_filename, ":", text)
                 whole_text += text
 
-            # Remove the files after finishing the job
-            os.remove(chunk_filename)
+        # Remove the files after finishing the job
+        os.remove(chunk_filename)
     # return the text for all chunks detected
     return whole_text
 
@@ -65,10 +65,17 @@ def handle_large_audio(path):
 def write_to_file(text):
     with open('assets/out/recording.txt','w') as file:
         file.write(text)
+ 
+    
 
 
-def convert_to_wav(audio_segment, filename='/assets/out'):
-    audio_segment.export('recordings.wav', format="wav")
+def convert_to_wav(audio_segment, filename='/assets/out') -> bool:
+    try:
+        audio_segment.export('recordings.wav', format="wav")
+        return True
+    except Exception as e:
+        print("Error: ", e)
+        return False
 
 
 if __name__ == "__main__":
