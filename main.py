@@ -15,7 +15,6 @@ main_page = '''
     form {text-align: center;}
     </style>
     </head>
-    <body style="background-color:rgb(246, 239, 208)>
     <h1>Upload your lecture</h1>
     <p>
     <form method=post enctype=multipart/form-data>
