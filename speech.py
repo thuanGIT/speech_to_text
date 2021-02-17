@@ -67,6 +67,10 @@ def write_to_file(text):
         file.write(text)
 
 
+def convert_to_wav(audio_segment, filename='/assets/out'):
+    audio_segment.export('recordings.wav', format="wav")
+
+
 if __name__ == "__main__":
         # Recognizer instance
     r  = sr.Recognizer()

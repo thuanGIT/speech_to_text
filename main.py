@@ -4,6 +4,28 @@ from werkzeug.utils import secure_filename
 from flask import send_from_directory
 from speech import handle_large_audio, write_to_file
 
+main_page = '''
+    <!doctype html>
+    <html>
+    <head>
+    <style>
+    h1 {text-align: center;}
+    p {text-align: center;}
+    div {text-align: center;}
+    form {text-align: center;}
+    </style>
+    </head>
+    <body style="background-color:rgb(246, 239, 208)>
+    <h1>Upload your lecture</h1>
+    <p>
+    <form method=post enctype=multipart/form-data>
+      <input type=file name=file>
+      <input type=submit value=Upload>
+    </form>
+    </p>
+    </body>
+    </html>
+    '''
 UPLOAD_FOLDER = '/assets/audio'
 ALLOWED_EXTENSIONS = {'wav'}
 
@@ -29,30 +51,8 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file',
-                                    filename=filename))
-    return '''
-    <!doctype html>
-    <html>
-    <head>
-    <style>
-    h1 {text-align: center;}
-    p {text-align: center;}
-    div {text-align: center;}
-    form {text-align: center;}
-    </style>
-    </head>
-    <body>
-    <h1>Upload new File</h1>
-    <p>
-    <form method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit value=Upload>
-    </form>
-    </p>
-    </body>
-    </html>
-    '''
+            return redirect(url_for('uploaded_file', filename=filename))
+    return main_page 
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
