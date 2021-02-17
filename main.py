@@ -38,11 +38,11 @@ def upload_file():
             # Process the audio
             process(filename)
             return redirect(url_for('download_file', filename=filename))
-    return render_template('/html/mainpage.html')
+    return render_template('mainpage.html')
 
 @app.route('/download/<filename>', methods = ['GET'])
 def download_file(filename):
-    return render_template('/html/download.html',value=filename)
+    return render_template('download.html',value=filename)
     
 
 @app.route('/result/<filename>')
