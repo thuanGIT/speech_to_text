@@ -2,9 +2,6 @@ import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 import os
-# Recognizer instance
-r  = sr.Recognizer()
-path_name = 'assets/audio/lecture.wav'
 
 def handle_large_audio(path):
     """
@@ -71,6 +68,9 @@ def write_to_file(text):
 
 
 if __name__ == "__main__":
+        # Recognizer instance
+    r  = sr.Recognizer()
+    path_name = 'assets/audio/lecture.wav'
     result = handle_large_audio(path_name)
     write_to_file(result)
 
