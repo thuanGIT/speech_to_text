@@ -3,6 +3,7 @@ from pydub import AudioSegment
 from pydub.silence import split_on_silence
 import os
 
+r  = sr.Recognizer()
 def handle_large_audio(path) -> str:
     """
     Splitting the large audio file into chunks
@@ -78,12 +79,4 @@ def convert_to_wav(audio, filename='/assets/download') -> bool:
     except Exception as e:
         print("Error: ", e)
         return False
-
-# For testing
-if __name__ == "__main__":
-        # Recognizer instance
-    r  = sr.Recognizer()
-    path_name = 'assets/audio/lecture.wav'
-    result = handle_large_audio(path_name)
-    write_to_file(result)
 
