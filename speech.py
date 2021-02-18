@@ -32,6 +32,8 @@ def handle_large_audio(path) -> str:
     # Open audio file
     sound = AudioSegment.from_wav(path)
     # Split audio where silence is 1 second or more
+    # Keep 300ms trailing/leading seconds
+    # Anything less than -15 dBFS is considered silence
     # Return chunks of sound
     chunks = split_on_silence(sound, min_silence_len= 1000, silence_thresh=sound.dBFS-15,keep_silence=300)
 
@@ -63,21 +65,21 @@ def handle_large_audio(path) -> str:
 
 
 def write_to_file(text, filename):
-    with open(f'assets/out/{filename}.txt','w') as file:
+    with open(f'assets/download/{filename}.txt','w') as file:
         file.write(text)
  
     
 
 
-def convert_to_wav(audio_segment, filename='/assets/out') -> bool:
+def convert_to_wav(audio, filename='/assets/download') -> bool:
     try:
-        audio_segment.export('recordings.wav', format="wav")
+        audio.export('recordings.wav', format="wav")
         return True
     except Exception as e:
         print("Error: ", e)
         return False
 
-
+# For testing
 if __name__ == "__main__":
         # Recognizer instance
     r  = sr.Recognizer()

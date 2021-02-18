@@ -5,7 +5,7 @@ from flask import send_from_directory
 from speech import handle_large_audio, write_to_file
 
 UPLOAD_FOLDER = '/assets/audio'
-DOWNLOAD_FOLDER = '/assets/out'
+DOWNLOAD_FOLDER = '/assets/download'
 ALLOWED_EXTENSIONS = {'m4a', 'wav','mp4','mp3'}
 
 app = Flask(__name__, template_folder='templates')
@@ -32,11 +32,14 @@ def upload_file():
         if file and allowed_file(file.filename):
             # Check if the file's name is safe
             filename = secure_filename(file.filename)
+
             # Save file to folder
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             print("saved file successfully") # Debugging
+
             # Process the audio
             process(filename)
+            
             return redirect(url_for('download_file', filename=filename))
     return render_template('mainpage.html')
 
@@ -47,7 +50,7 @@ def download_file(filename):
 
 @app.route('/result/<filename>')
 def get_result(filename):
-    return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename)
+    return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename, as_attachment=True)
 
 def process(filename):
     path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
