@@ -56,7 +56,7 @@ def handle_large_audio(path) -> str:
                 print("Error:", str(e))
             else:
                 text = f"{text.capitalize()}. "
-                print(chunk_filename, ":", text)
+                # print(chunk_filename, ":", text)
                 whole_text += text
 
         # Remove the files after finishing the job
@@ -64,12 +64,16 @@ def handle_large_audio(path) -> str:
     # After finishing the job
     # Remove the audio file
     os.remove(path)
+
+    # Debugging
+    print(whole_text)
+
     # return the text for all chunks detected
     return whole_text
 
 
 def write_to_file(text, filename):
-    with open(f'assets/download/{filename}.txt','w') as file:
+    with open(f'assets/download/{filename}','w') as file:
         file.write(text)
         
  
