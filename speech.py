@@ -22,7 +22,7 @@ def handle_large_audio(path) -> str:
     Raises
     ------
     UnknownValueError
-        If the algoritm cannot transcribe the audio due to background noise
+        If the algorithm cannot transcribe the audio due to background noise
 
     Examples
     --------
@@ -71,11 +71,39 @@ def handle_large_audio(path) -> str:
 def write_to_file(text, filename):
     with open(f'assets/download/{filename}.txt','w') as file:
         file.write(text)
+        
  
     
 
+def convert_to_wav(audio, savepath='/assets/audio') -> bool:
+    """
+    Convert other audio formats to wav
 
-def convert_to_wav(audio, filename='/assets/download') -> bool:
+    Parameters
+    ----------
+    audio: AudioSegment
+        The AudioSegment Instance representing the audio file
+    
+    savepath: str
+        Path to save file
+
+    Returns
+    -------
+    bool
+        Indicates whether the file converted and saved sucessfully
+    
+    Raises
+    ------
+    Exception
+        In case some unexpected error happens.
+
+    Examples
+    --------
+    >>> from pydub import AudioSegment
+    >>> audio = AudioSegment.from_file('test.mp4', format = 'mp4')
+    >>> convert_to_wav(audio, 'assets/audio/')
+    >>> True 
+    """
     try:
         audio.export('recordings.wav', format="wav")
         return True
