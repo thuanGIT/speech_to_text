@@ -61,6 +61,9 @@ def handle_large_audio(path) -> str:
 
         # Remove the files after finishing the job
         os.remove(chunk_filename)
+    # After finishing the job
+    # Remove the audio file
+    os.remove(path)
     # return the text for all chunks detected
     return whole_text
 

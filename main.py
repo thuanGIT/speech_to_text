@@ -34,10 +34,10 @@ def upload_file():
             filename = secure_filename(file.filename)
 
             # Save file to folder
-            #file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), "wb") as fp:
-                fp.write(file)
-                print("saved file successfully") # Debugging
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), "wb") as fp:
+            #     fp.write(file)
+            print("saved file successfully") # Debugging
 
             # Process the audio
             process(filename)
