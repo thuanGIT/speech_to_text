@@ -52,11 +52,16 @@ def download_file(filename):
 
 @app.route('/result/<filename>')
 def get_result(filename):
+    # Modify filename
+    filename = filename[:-3] + ".txt"
     return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename, as_attachment=True)
 
 def process(filename):
     path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     result = handle_large_audio(path)
+
+    # Modify filename
+    filename = filename[:-3] + ".txt"
     write_to_file(result, filename=filename)
 
 
