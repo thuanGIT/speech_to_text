@@ -9,7 +9,7 @@ DOWNLOAD_FOLDER = 'assets/download'
 ALLOWED_EXTENSIONS = {'m4a', 'wav','mp4','mp3'}
 result_file = 'result.txt'
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder='templates', static_folder='static')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
 

@@ -2,13 +2,13 @@
     <html>
       <head>
         <title>Happy Birthday Leah</title>
-        <link rel="stylesheet" href="templates/style.css">
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
         <link href='https://fonts.googleapis.com/css?family=Ribeye' rel='stylesheet' type='text/css'>
       </head>
     <body style="background-color: #DB4231;">
     <div class="container">
       <div id="title">Upload your audio</div>
-      <img src="assets/images/birthday.PNG">
+      <img src="{{url_for('static', filename='images/birthday.PNG')}}">
       <p>
         <form method=post enctype=multipart/form-data>
           <input type=file name=file class="button">
