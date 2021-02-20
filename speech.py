@@ -1,10 +1,13 @@
+
 import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 import os
 
 r  = sr.Recognizer()
-def handle_large_audio(path) -> str:
+FORMAT_TO_CONVERT= {'m4a','mp4','mp3'}
+
+def handle_large_audio(path: str) -> str:
     """
     Splitting the large audio file into chunks
     and apply speech recognition on each of these chunks
@@ -30,8 +33,17 @@ def handle_large_audio(path) -> str:
     >>> chunk1.wav: Alright,let's talk about amphibians today
     >>> chunk2.wav: They are 
     """
+   
+    format = path[-3:]
+    print(format)
     # Open audio file
-    sound = AudioSegment.from_wav(path)
+    sound = AudioSegment.from_file(path, format)
+
+    # Convert file to wav if not
+    if  format in FORMAT_TO_CONVERT:
+        sound = convert_to_wav(audio=sound, sourcepath=path)
+
+
     # Split audio where silence is 1 second or more
     # Keep 300ms trailing/leading seconds
     # Anything less than -15 dBFS is considered silence
@@ -79,7 +91,7 @@ def write_to_file(text, filename):
  
     
 
-def convert_to_wav(audio, savepath='/assets/audio') -> bool:
+def convert_to_wav(audio, sourcepath, savepath='/assets/audio') -> AudioSegment:
     """
     Convert other audio formats to wav
 
@@ -93,8 +105,8 @@ def convert_to_wav(audio, savepath='/assets/audio') -> bool:
 
     Returns
     -------
-    bool
-        Indicates whether the file converted and saved sucessfully
+    AudioSegment
+        Return a new AudioSegmnet instance pointing to the newly converted files in .wav
     
     Raises
     ------
@@ -109,9 +121,10 @@ def convert_to_wav(audio, savepath='/assets/audio') -> bool:
     >>> True 
     """
     try:
-        audio.export('recordings.wav', format="wav")
-        return True
+        audio.export(os.path.join(savepath,'recordings.wav'), format="wav")
+        os.remove(sourcepath)
+        return AudioSegment.from_wav(savepath)
     except Exception as e:
         print("Error: ", e)
-        return False
+        return audio
 

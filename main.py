@@ -7,6 +7,7 @@ from speech import handle_large_audio, write_to_file
 UPLOAD_FOLDER = 'assets/audio'
 DOWNLOAD_FOLDER = 'assets/download'
 ALLOWED_EXTENSIONS = {'m4a', 'wav','mp4','mp3'}
+result_file = 'result.txt'
 
 app = Flask(__name__, template_folder='templates')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -54,18 +55,20 @@ def download_file(filename):
 def get_result(filename):
     # Debugging
     print(f"Downloading {filename}.txt")
-    return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename='result.txt', as_attachment=True)
+    return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename=result_file, as_attachment=True)
 
 def process(filename):
     path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     result = handle_large_audio(path)
 
     # Modify filename
-    write_to_file(result, filename='result.txt')
+    write_to_file(result, filename=result_file)
 
 
 
 if __name__ == "__main__":
+    import sys
+    sys.path.append('config/ffmpeg')
     port = int(os.environ.get("PORT", 5000)) # Default port is 5000
     app.run(host='0.0.0.0', port=port)
 
