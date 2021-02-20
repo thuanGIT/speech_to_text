@@ -75,7 +75,7 @@ def handle_large_audio(path: str) -> str:
         os.remove(chunk_filename)
     # After finishing the job
     # Remove the audio file
-    os.remove(path)
+    #os.remove('assets/audio/recording.wav')
 
     # Debugging
     print(whole_text)
@@ -91,7 +91,7 @@ def write_to_file(text, filename):
  
     
 
-def convert_to_wav(audio, sourcepath, savepath='/assets/audio') -> AudioSegment:
+def convert_to_wav(audio, sourcepath, savepath='assets/audio') -> AudioSegment:
     """
     Convert other audio formats to wav
 
