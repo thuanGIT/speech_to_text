@@ -1,16 +1,23 @@
 <!doctype html>
 <html>
    <head>
+      <style>
+      div {text-align: center;}
+      </style>
       <title>Happy Birthday Leah</title>
       <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
       <link href='https://fonts.googleapis.com/css?family=Ribeye' rel='stylesheet' type='text/css'>
    </head>
 <body style="background-color: #daac69;">
-   <div id="title">Download File</div> 
+   <div id="title">Download File</div>
    <div class="container">
-      <a href="/result/{{value}}" target="blank"><img src="{{url_for('static', filename='images/download.PNG')}}"></a>
+      <a href="/result/{{value}}" target="blank">
+         <img src="{{url_for('static', filename='images/download.PNG')}}">
+      </a>
+   </div> 
+   
       
-   </div>
+
 </body>
 </html>
 
