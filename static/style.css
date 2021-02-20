@@ -68,23 +68,6 @@ input[type=file]::-webkit-file-upload-button {
     border: 2px solid #4eb44a;
 }
 
-/* Style buttons */
-.button {
-  -webkit-border-radius: 28;
-  -moz-border-radius: 28;
-  border-radius: 28px;
-  background-color: #a29bfe;
-  border: 2px solid #6c5ce7;
-  color: white;
-  padding: .2em .4em;
-  font-family: "Comic Sans MS";
-  cursor: pointer;
-}
-
-/* Darker background on mouse-over */
-.button:hover {
-  background-color: #6c5ce7;
-}
 
 a:link, a:visited {
   background-color: #a29bfe;
