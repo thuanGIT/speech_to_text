@@ -11,7 +11,7 @@ body{
     justify-content:space-between;
 }
 
-img{
+.img{
     width: 300px;
     height: 300px;
 }
@@ -19,7 +19,8 @@ img{
 #title{
     color: white;
     font-size:50px;
-    align-items: center;
+    text-align: center;
+    
 }
 
 input[type=file]::-webkit-file-upload-button {
@@ -63,8 +64,8 @@ input[type=file]::-webkit-file-upload-button {
 
   input[type=submit]:hover {
     cursor: pointer;
-  background-color: #a6e2c1;
-  border: 2px solid #4eb44a;
+    background-color: #a6e2c1;
+    border: 2px solid #4eb44a;
 }
 
 /* Style buttons */
