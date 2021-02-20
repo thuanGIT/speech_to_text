@@ -1,13 +1,16 @@
 <!doctype html>
-<head>
-   <title>Happy Birthday Leah</title>
-   <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
-   <link href='https://fonts.googleapis.com/css?family=Ribeye' rel='stylesheet' type='text/css'>
-</head>
-<body style="background-color: #DB4231;">
+<html>
+   <head>
+      <title>Happy Birthday Leah</title>
+      <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+      <link href='https://fonts.googleapis.com/css?family=Ribeye' rel='stylesheet' type='text/css'>
+   </head>
+<body style="background-color: #daac69;">
+   <div id="title">Download File</div> 
    <div class="container">
-      <div class= 'title' id="title">Download File</div>
-      <img src="{{url_for('static', filename='images/download.PNG')}}">
-      <a href="/result/{{value}}" target="blank"><button class="button">Download</button></a>
+      <a href="/result/{{value}}" target="blank"><img src="{{url_for('static', filename='images/download.PNG')}}"></a>
+      
    </div>
 </body>
+</html>
+

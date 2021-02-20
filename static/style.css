@@ -5,14 +5,13 @@ body{
 .container{
     height:100vh;
     width: 100vw;
-    /* display: flex; */
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content:space-between;
 }
 
 img{
-    align-items: center;
     width: 300px;
     height: 300px;
 }
@@ -42,7 +41,7 @@ input[type=file]::-webkit-file-upload-button {
   } */
   
   input[type=file]::-webkit-file-upload-button:hover {
-      cursor: pointer;
+    cursor: pointer;
     background-color: #a6e2c1;
     border: 2px solid #4eb44a;
   }
@@ -53,7 +52,7 @@ input[type=file]::-webkit-file-upload-button {
   } */
 
   input[type=submit] {
-      color: white;
+    color: white;
     font-family: "Comic Sans MS";
     border: 2px solid #6c5ce7;
     padding: .2em .4em;
@@ -84,4 +83,19 @@ input[type=file]::-webkit-file-upload-button {
 /* Darker background on mouse-over */
 .button:hover {
   background-color: #6c5ce7;
+}
+
+a:link, a:visited {
+  background-color: #a29bfe;
+  color: #a29bfe;
+  padding: .2em .4em;
+  text-align: center; 
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover, a:active {
+  cursor: pointer;
+  background-color: #a6e2c1;
+  border: 2px solid #4eb44a;
 }
