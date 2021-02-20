@@ -67,19 +67,3 @@ input[type=file]::-webkit-file-upload-button {
     background-color: #a6e2c1;
     border: 2px solid #4eb44a;
 }
-
-
-a:link, a:visited {
-  background-color: #a29bfe;
-  color: #a29bfe;
-  padding: .2em .4em;
-  text-align: center; 
-  text-decoration: none;
-  display: inline-block;
-}
-
-a:hover, a:active {
-  cursor: pointer;
-  background-color: #a6e2c1;
-  border: 2px solid #4eb44a;
-}
