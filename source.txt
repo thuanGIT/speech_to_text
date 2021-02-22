@@ -2,9 +2,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-seg = audiosegment.from_file("furelise.wav")
-# Just take the first 3 seconds
-hist_bins, hist_vals = seg[1:3000].fft()
+filename = "test"
+seg = AudioSegment.from_wav(f"assets/audio/{filename}.wav")
+# Just take the first 10 minutes
+hist_bins, hist_vals = seg[1:100000].fft()
 hist_vals_real_normed = np.abs(hist_vals) / len(hist_vals)
 plt.plot(hist_bins / 1000, hist_vals_real_normed)
 plt.xlabel("kHz")

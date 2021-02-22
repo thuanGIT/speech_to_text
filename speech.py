@@ -1,4 +1,3 @@
-
 import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
@@ -88,9 +87,6 @@ def write_to_file(text, filename):
     with open(f'assets/download/{filename}','w') as file:
         file.write(text)
         
- 
-    
-
 def convert_to_wav(audio, sourcepath, savepath='assets/audio') -> AudioSegment:
     """
     Convert other audio formats to wav
