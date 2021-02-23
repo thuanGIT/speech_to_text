@@ -2,21 +2,25 @@ import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 import os
+import time
 
 r  = sr.Recognizer()
 FORMAT_TO_CONVERT= {'m4a','mp4','mp3'}
 result_file = 'result.txt'
 
-def handle_large_audio(self, path: str) -> str:
+def handle_large_audio(self, filename=None):
+    if filename is None:
+        raise FileNotFoundError
+
     # Check the extension of the filepath
-    format = path[-3:]
+    format = filename[-3:]
     print(format)
     # Open audio file
-    sound = AudioSegment.from_file(path, format)
+    sound = AudioSegment.from_file(filename, format)
 
     # Convert file to wav if not
     if format in FORMAT_TO_CONVERT:
-        sound = convert_to_wav(audio=sound, sourcepath=path)
+        sound = convert_to_wav(audio=sound, sourcepath=filename)
 
 
     # Split audio where silence is 1 second or more
@@ -44,13 +48,16 @@ def handle_large_audio(self, path: str) -> str:
             else:
                 text = f"{text.capitalize()}. "
                 print(chunk_filename, "(done):", text)
-                self.update_state(state='PROGRESS', total = len(chunks))
+                self.update_state(state='PROGRESS', 
+                                    meta={'current': i, 'total': len(chunk_filename), 'status': text})
 
                 # Appending the resulting transcript here
                 whole_text += text
 
         # Remove the files after finishing the job
         os.remove(chunk_filename)
+
+        time.sleep(1)
     # After finishing the job
     # Remove the audio file
     #os.remove('assets/audio/recording.wav')
@@ -59,7 +66,9 @@ def handle_large_audio(self, path: str) -> str:
     print(whole_text)
     write_to_file(whole_text, filename=result_file)
 
-    return {'current': 100, 'total': 100, 'status': 'Task completed'}
+    return {'current': 100, 'total': 100, 'status': 'Task completed', 'result': whole_text}
+
+    
 
 
 def write_to_file(text, filename):

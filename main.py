@@ -1,17 +1,19 @@
 import os
-from flask import Flask, flash, request, redirect, url_for, render_template
+from flask import Flask, flash, request, redirect, url_for, render_template, jsonify
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
 from celery import Celery
-from speech import handle_large_audio, write_to_file
+import speech
 from dotenv import load_dotenv
 
 # Setting for environment from .env
+# Not applicable with heroku
 load_dotenv()
+
 UPLOAD_FOLDER = 'assets/audio'
 DOWNLOAD_FOLDER = 'assets/download'
 ALLOWED_EXTENSIONS = {'m4a', 'wav','mp4','mp3'}
-result_file = 'result.txt'
+
 
 # Flask app config
 app = Flask(__name__, template_folder='templates', static_folder='static')
@@ -45,15 +47,18 @@ def upload_file():
 
             # Save file to folder
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            # with open(os.path.join(app.config['UPLOAD_FOLDER'], filename), "wb") as fp:
-            #     fp.write(file)
             print("saved file successfully") # Debugging
-
-            # Process the audio
-            process.apply_async(args=[filename])
-
-            return redirect(url_for('download_file', filename=filename))
+            
+            return redirect(url_for('start_task', filename=filename))
     return render_template('mainpage.html')
+
+@app.route('/start/<filename>')
+def start_task(filename):
+    # Process the audio
+    task = process.apply_async(args=[filename])
+    # Code 202 means task is in progress
+    return jsonify({}), 202, {'Location': url_for('get_status',task_id=task.id)}
+
 
 @app.route('/download/<filename>', methods = ['GET'])
 def download_file(filename):
@@ -63,27 +68,51 @@ def download_file(filename):
 def get_result(filename):
     # Debugging
     print(f"Downloading {filename}.txt")
-    return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename=result_file, as_attachment=True)
+    return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename=speech.result_file, as_attachment=True)
 
-@app.route('/status')
-def get_status():
-    pass
+@app.route('/status/<task_id>')
+def get_status(task_id):
+    task = process.AsyncResult(task_id)
+    if task.state == 'PENDING':
+        # job did not start yet
+        response = {
+            'state': task.state,
+            'current': 0,
+            'total': 1,
+            'status': 'Pending...'
+        }
+    elif task.state != 'FAILURE': # could be STARTED, RETRY, SUCCESS
+        response = {
+            'state': task.state,
+            'current': task.info.get('current', 0),
+            'total': task.info.get('total', 1),
+            'status': task.info.get('status', '')
+        }
+        if 'result' in task.info:
+            response['result'] = task.info['result']
+    else:
+        # something went wrong in the background job
+        response = {
+            'state': task.state,
+            'current': 1,
+            'total': 1,
+            'status': str(task.info),  # this is the exception raised
+        }
+    return jsonify(response)
+
+    # return redirect(url_for('download_file'), filename=filename)
+
 
 
 @celery.task(bind=True) # This instructs Celery to send a self argument to my function for status update
 def process(self, filename):
-    path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    result = handle_large_audio(self, path)
-     # Modify filename
-    write_to_file(result, filename=result_file)
-    
+    result = speech.handle_large_audio(self, filename=os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    return result
     
 
 def allowed_file(filename):
     return '.' in filename and filename.split('.', 1)[1].lower() in ALLOWED_EXTENSIONS
    
-
-
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000)) # Default port is 5000
