@@ -5,41 +5,17 @@ import os
 
 r  = sr.Recognizer()
 FORMAT_TO_CONVERT= {'m4a','mp4','mp3'}
+result_file = 'result.txt'
 
-def handle_large_audio(path: str) -> str:
-    """
-    Splitting the large audio file into chunks
-    and apply speech recognition on each of these chunks
-
-    Parameters
-    ----------
-    pathname: string
-        The path to audio file
-
-    Returns
-    -------
-    string
-        The transcript of the audio 
-    
-    Raises
-    ------
-    UnknownValueError
-        If the algorithm cannot transcribe the audio due to background noise
-
-    Examples
-    --------
-    >>> handle_large_audio('assets/audio/lecture.wav')
-    >>> chunk1.wav: Alright,let's talk about amphibians today
-    >>> chunk2.wav: They are 
-    """
-   
+def handle_large_audio(self, path: str) -> str:
+    # Check the extension of the filepath
     format = path[-3:]
     print(format)
     # Open audio file
     sound = AudioSegment.from_file(path, format)
 
     # Convert file to wav if not
-    if  format in FORMAT_TO_CONVERT:
+    if format in FORMAT_TO_CONVERT:
         sound = convert_to_wav(audio=sound, sourcepath=path)
 
 
@@ -67,7 +43,10 @@ def handle_large_audio(path: str) -> str:
                 print("Error:", str(e))
             else:
                 text = f"{text.capitalize()}. "
-                # print(chunk_filename, ":", text)
+                print(chunk_filename, "(done):", text)
+                self.update_state(state='PROGRESS', total = len(chunks))
+
+                # Appending the resulting transcript here
                 whole_text += text
 
         # Remove the files after finishing the job
@@ -78,9 +57,9 @@ def handle_large_audio(path: str) -> str:
 
     # Debugging
     print(whole_text)
+    write_to_file(whole_text, filename=result_file)
 
-    # return the text for all chunks detected
-    return whole_text
+    return {'current': 100, 'total': 100, 'status': 'Task completed'}
 
 
 def write_to_file(text, filename):
