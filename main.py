@@ -48,11 +48,11 @@ def upload_file():
             # Save file to folder
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             print("saved file successfully") # Debugging
-            
-            return redirect(url_for('start_task', filename=filename))
+
+            return redirect(url_for('show_status', filename=filename))
     return render_template('mainpage.html')
 
-@app.route('/start/<filename>')
+@app.route('/start/<filename>', methods=['POST'])
 def start_task(filename):
     # Process the audio
     task = process.apply_async(args=[filename])
@@ -101,6 +101,10 @@ def get_status(task_id):
     return jsonify(response)
 
     # return redirect(url_for('download_file'), filename=filename)
+
+@app.route('/status/<filename>')
+def show_status(filename):
+    return render_template('status.html', value=filename)
 
 
 
