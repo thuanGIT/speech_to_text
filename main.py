@@ -106,8 +106,6 @@ def get_status(task_id):
 def show_status(filename):
     return render_template('status.html', value=filename)
 
-
-
 @celery.task(bind=True) # This instructs Celery to send a self argument to my function for status update
 def process(self, filename):
     result = speech.handle_large_audio(self, filename=os.path.join(app.config['UPLOAD_FOLDER'], filename))
@@ -119,7 +117,7 @@ def allowed_file(filename):
    
 
 if __name__ == "__main__":
+    print("Starting app")
     port = int(os.environ.get("PORT", 5000)) # Default port is 5000
     app.run(host='0.0.0.0', port=port)
 
-    
