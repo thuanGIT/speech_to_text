@@ -3,7 +3,7 @@ from flask import Flask, flash, request, redirect, url_for, render_template, jso
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
 from celery import Celery
-import speech
+from lib import speech
 from dotenv import load_dotenv
 
 # Setting for environment from .env
