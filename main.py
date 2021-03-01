@@ -49,7 +49,8 @@ def upload_file():
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             print("saved file successfully") # Debugging
 
-            return redirect(url_for('show_status', filename=filename))
+            return render_template('status.html', value=filename)
+            #return redirect(url_for('show_status', filename=filename))
     return render_template('mainpage.html')
 
 @app.route('/start/<filename>', methods=['POST'])
@@ -105,6 +106,10 @@ def get_status(task_id):
 @app.route('/status/<filename>')
 def show_status(filename):
     return render_template('status.html', value=filename)
+
+@app.route('/error404')
+def show_error_404():
+    return render_template("error.html")
 
 @celery.task(bind=True) # This instructs Celery to send a self argument to my function for status update
 def process(self, filename):
