@@ -47,7 +47,7 @@
                 // send ajax POST request to start background job
                 $.ajax({
                     type: 'POST',
-                    url: '/start',
+                    url: '/start/{{value}}',
                     success: function(data, status, request) {
                         status_url = request.getResponseHeader('Location');
                         update_progress(status_url, nanobar, div[0]);
@@ -80,13 +80,14 @@
                     }
                 }
                 else {
-                        // rerun in 2 seconds
+                        // rerun in 3 seconds
                         setTimeout(function() {
                             update_progress(status_url, nanobar, status_div);
-                            }, 2000);
+                            }, 3000);
                     }
                 });
             }
+            // Use to hide and show progess bar
             function toggle() {
                 var bar = document.getElementById("progress");
                 if (bar.style.display === "none") {
@@ -95,6 +96,8 @@
                     bar.style.display = "none";
                 }
             }
+            
+            // Start translating jobs on click
             $(function() {
                 $('#start-job').click(start_job)
             });
