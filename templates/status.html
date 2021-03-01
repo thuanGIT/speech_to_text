@@ -70,7 +70,8 @@
                 if (data['state'] != 'PENDING' && data['state'] != 'PROGRESS') {
                     if ('result' in data) {
                         // show result
-                        $(status_div.childNodes[3]).text('Result: ' + data['result']);
+                        //$(status_div.childNodes[3]).text('Result: ' + data['result']);
+                        document.location.href="/download/{{value}}";
                     }
                     else {
                         // something unexpected happened

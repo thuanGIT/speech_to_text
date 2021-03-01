@@ -53,7 +53,7 @@ def upload_file():
             #return redirect(url_for('show_status', filename=filename))
     return render_template('mainpage.html')
 
-@app.route('/start/<filename>', methods=['POST'])
+@app.route('/start', methods=['POST'])
 def start_task(filename):
     # Process the audio
     task = process.apply_async(args=[filename])
