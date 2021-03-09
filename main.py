@@ -4,11 +4,11 @@ from werkzeug.utils import secure_filename
 from flask import send_from_directory
 from celery import Celery
 from lib import speech
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 # Setting for environment from .env
 # Not applicable with heroku
-load_dotenv()
+#load_dotenv()
 
 UPLOAD_FOLDER = 'assets/audio'
 DOWNLOAD_FOLDER = 'assets/download'
